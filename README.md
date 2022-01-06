@@ -26,6 +26,13 @@ For scraping, the script uses simple gnu utils like sed, pr, cut.
 ### cURL
 cURL **SoftyRoll** to your **$PATH** and give execute permissions.
 
+```sh
+$ sudo curl -sL "https://github.com/LamprosPitsillos/SoftyRoll" -o ~/.local/bin/SoftyRoll
+$ sudo chmod +x ~/.local/bin/SoftyRoll
+```
 - To update, just do `curl` again, no need to `chmod` anymore.
 - To uninstall, simply remove `SoftyRoll` from your **$PATH**, for example `rm -f ~/.local/bin/SoftyRoll`.
 
+## Credit 
+This was heavily inspired by [Bugswriter/notflix](https://github.com/Bugswriter/notflix/blob/master/README.md)
+The README is basically a copy of his project.
