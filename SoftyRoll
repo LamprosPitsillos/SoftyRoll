@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Dependencies - webtorrent, mpv ,rofi or fzf
+# Optional Dependencies - rg
+
+RED='\033[1;31m'
+NC='\033[0m' # No Color
+BOLD=$(tput bold)
+NORM=$(tput sgr0)
+
+baseurl="https://nyaa.si/"
+# greping_tool="grep"
+greping_tool="rg"
+SoftyRoll(){
+	RAW="$(curl -s "$baseurl/?q=$query&s=seeders&o=desc")"
+	titles="$(echo "$RAW" | $greping_tool "<a href=\"/view/.*</a>" | sed "s#.*title=\"\(.*\)\".*#\1#")"
+	[ -z "$titles" ] && notify "Exiting" "No Results found for \"$(echo $query | tr "+" " ")\"" && exit
+	size="$(echo "$RAW" | $greping_tool "<td class=\"text-center\">[0-9]+\.*[0-9]* " | sed "s#.*>\(.*\)<.*#\1#g" )"
+	magnets="$(echo "$RAW" | $greping_tool "<a href=\"magnet.*\".*" | sed "s#.*<a href=\"\(magnet.*\)\"><i.*#\1#")"
+	list="${titles}${size}"
+	selected="$(echo "$list" | pr -J -2 -t --length="$(echo "$titles" | wc -l)" --sep-string=" : " |nl -s: -w1 | $menu | cut -d: -f1)"
+	[ -z "$selected" ] && notify "Exiting" "No Results selected for \"$(echo $query | tr "+" " ")\"" && exit
+	notify "Loading" "\"$(echo $query | tr "+" " ")\" will be ready for viewing in just a second!" 
+	webtorrent "$(echo "$magnets" | sed -n "${selected}p")" --mpv 
+}
+
+if [ -t 1 ] ; then
+
+	menu="fzf"
+	notify(){
+		echo -e "${RED}${BOLD}${1}: ${NORM}${NC} ${2}"
+	}
+	echo -n "${BOLD}Anime: ${NORM}"
+	read -r query
+	query="$(echo "$query" | tr " " "+")"
+else
+
+	menu="rofi -theme Notflix -dmenu -i -l 5 -p  -format d -matching normal "
+	notify(){
+		notify-send "${1}" "${2}" -i NONE
+	}
+	search_menu="rofi -theme Input -dmenu -i -p Anime:"
+	query="$($search_menu | tr " " "+")"
+fi
+
+SoftyRoll
