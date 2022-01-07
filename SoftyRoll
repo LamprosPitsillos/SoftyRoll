@@ -35,11 +35,11 @@ if [ -t 1 ] ; then
 	query="$(echo "$query" | tr " " "+")"
 else
 
-	menu="rofi -theme Notflix -dmenu -i -l 5 -p  -format d -matching normal "
+	menu="rofi -dmenu -i -l 5 -p  -format d -matching normal "
 	notify(){
 		notify-send "${1}" "${2}" -i NONE
 	}
-	search_menu="rofi -theme Input -dmenu -i -p Anime:"
+	search_menu="rofi -dmenu -i -p Anime:"
 	query="$($search_menu | tr " " "+")"
 fi
 
