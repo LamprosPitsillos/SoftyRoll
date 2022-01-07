@@ -3,12 +3,12 @@
 
 ## In the terminal
 <p align="center">
-<img src="./TTY.gif" alt="Video Preview" width="500px">
+<img src="./TTY.gif" alt="Video Preview" width="600px">
 </p>
 
 ## Outside the terminal
 <p align="center">
-<img src="./noTTY.gif" alt="Video Preview" width="500px">
+<img src="./noTTY.gif" alt="Video Preview" width="600px">
 </p>
 
 ### How does this work?
